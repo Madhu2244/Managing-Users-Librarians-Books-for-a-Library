@@ -51,7 +51,25 @@ class Book:
 
 
 import random
+'''
+i made 6 lists
+the userList is a list of all the users information
+the librarian list is a list of all the librarian information
+the bookInfoList is a list of all the different types of books (not count)
+the bookList is a dictionary of the book name and the count of each book
+the bookCheckOutList is a dictionary of the bookID and which userID its checked out to
 
+
+when making an account i take infomration from the user and i then create a person object
+out of it and i append it to the end of the userlist or librarian list depending on which we
+are making
+
+to check the username i go through the list of librarian information and i check if the id matches
+any of the ids in the list. if it does then i prompt for the pass word and the password and id
+must be both in the same librarian
+
+once the information has been given, the librarian/user has a few options of what they want to to
+'''
 print(str(random.randrange(1, 100)))
 userList = []
 librarianList = []
