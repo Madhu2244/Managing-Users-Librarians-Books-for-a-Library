@@ -41,6 +41,11 @@ bookInfoList = []
 bookList = {}
 bookCheckOutList = {}
 while(True):
+    print(userList)
+    print(librarianList)
+    print(bookInfoList)
+    print(bookList)
+    print(bookCheckOutList)
     print("""Welcome to Davis Library""")
     personInput = input("""Continue as user or librarian
     Login Menu:
@@ -82,38 +87,44 @@ while(True):
                     bookId = str(random.randrange(1, 100)) + bookName
                     print(bookId)
                     book = Book(bookName, bookAuthor, bookId, bookEdition)
-                    if (bookName in bookList):
+                    if bookName in bookList:
                         x = bookList[bookName] + 1
                         bookList[bookName] = x
                     else:
                         bookList[bookName] = 1
                     bookInfoList.append(book)
                     print("Book Id is: ", bookId)
-                    print(librarianList)
                 if choice == "2":
                     print(bookCheckOutList)
                 if choice == "4":
                     bookIdDelete = input("Type in the bookId to Delete")
-                    for book in bookList.keys():
-                        if bookIdDelete in bookList:
-                            x = bookList[bookName] - 1
-                            bookList[bookName] = x
+                    for people in bookInfoList:
+                        if people.checkId(bookIdDelete):
+                            bookNameDelete = people.bookName
+                            foundId = True
+                            x = bookList[bookNameDelete] - 1
+                            bookList[bookNameDelete] = x
                     print(bookList)
                 if choice == "5":
                     bookIdUpdate = input("Type in the bookId to Update")
                     foundId = False
-                    bookNameUpdate = ""
                     for people in bookInfoList:
                         if people.checkId(bookIdUpdate):
-                            bookNameUpdate = people.__getattribute__(bookName)
+                            bookNameDelete = people.bookName
                             foundId = True
+                            x = bookList[bookNameDelete] - 1
+                            bookList[bookNameDelete] = x
                     if foundId:
                         newbookName = str(input("Enter Book Name"))
                         newbookAuthor = str(input("Enter Author Full Name"))
                         newbookEdition = str(input("Enter Book Edition"))
-                        newbook = Person(newbookName, newbookAuthor, bookIdUpdate, newbookEdition)
-                        bookList[bookNameUpdate] = newbookName
-
+                        newbook = Book(newbookName, newbookAuthor, bookIdUpdate, newbookEdition)
+                        print(newbook)
+                        if newbookName in bookList:
+                            x = bookList[newbookName] + 1
+                            bookList[newbookName] = x
+                        else:
+                            bookList[newbookName] = 1
 
 
     if (personInput == "b"):
@@ -141,24 +152,30 @@ while(True):
                             3) Return a Book""")
                 if userControl == "1":
                     bookIdCheckout = input("Type in the book id you want to check out")
-                    for book in bookList.keys():
-                        if bookIdCheckout in bookList:
-                            x = bookList[bookName]
-                            if x >= 1:
+                    for people in bookInfoList:
+                        if people.checkId(bookIdCheckout):
+                            bookNameDelete = people.bookName
+                            bookIdUserGive = people.bookId
+                            x = bookList[bookNameDelete]
+                            if x >=1:
                                 x -=1
-                                bookList[bookName] = x
-                                bookCheckOutList[bookIdCheckout] = userIdInput
+                                bookList[bookNameDelete] = x
+                                bookCheckOutList[bookIdUserGive] = userIdInput
                             else:
-                                print("there are no books under that id")
+                                print("There are no books under that ID")
                 if userControl == "2":
-                    print(bookCheckOutList)
+                    for key, value in bookCheckOutList.items():
+                        if userIdInput == value:
+                            print(key, ",", value)
                 if userControl == "3":
                     bookIdCheckIn = input("Type in the book id you want to return")
-                    for book in bookList.keys():
-                        if bookIdCheckIn in bookList:
-                            x = bookList[bookName]
-                            x += 1
-                            bookList[bookName] = x
-                            #bookCheckOutList[bookIdCheckout] = userIdInput #smth not right here
-                        else:
-                            print("there are no books under that id")
+                    for people in bookInfoList:
+                        if people.checkId(bookIdCheckIn):
+                            bookIdUserReturn = people.bookId
+                            bookCheckOutList.pop(bookIdUserReturn)
+                            bookNameAdd = people.bookName
+                            if bookNameAdd in bookList:
+                                x = bookList[bookNameAdd] + 1
+                                bookList[bookNameAdd] = x
+                            else:
+                                bookList[bookNameAdd] = 1
